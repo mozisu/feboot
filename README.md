@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Feater" src="./assets/logo_feater_raw.png" width="516">
+  <img alt="Feater" src="./assets/logo_feater.png" width="516">
 </p>
 
 <p align="center">Quickly start your next web application.</p>
