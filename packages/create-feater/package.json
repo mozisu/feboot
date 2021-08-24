@@ -8,14 +8,18 @@
     "create-feater": "bin/create-feater.js"
   },
   "scripts": {
+    "start": "tsc --watch",
+    "build": "tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "files": [
     "lib",
     "bin",
-    "templates",
+    "templates"
   ],
-  "keywords": ["feater"],
+  "keywords": [
+    "feater"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wangchi/feater.git"
