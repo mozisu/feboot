@@ -6,15 +6,13 @@ export default ({
   presetConfig = {},
 }: PluginOptions): PluginFn => {
   return () => {
-    const babelRule = chainConfig.module.rule('babel');
-
-    babelRule.test(/.(j|t)sx?/);
+    const babelRule = chainConfig.module.rule('babel').test(/.(j|t)sx?/);
 
     babelRule
-      .use('babelLoader')
+      .use('babel-loader')
       .loader('babel-loader')
       .tap((options: Config.LoaderOptions) => {
-        options.presets.push('@babel/preset-react', presetConfig);
+        options.presets.push(['@babel/preset-react', presetConfig]);
         return options;
       });
   };
