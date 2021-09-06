@@ -4,4 +4,4 @@ import App from './App.jsx';
 
 import './index.less';
 
-render(<App />, document.getElementById('app'));
+render(<App />, document.getElementById('root'));
