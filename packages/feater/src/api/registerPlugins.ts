@@ -6,6 +6,7 @@ import { logError } from '../utils/log';
 import { FeaterConfig, FeaterPlugin } from '../../types';
 import Config from 'webpack-chain';
 import path from 'path';
+import { resolvePlugin } from '../utils/plugin';
 
 interface RegisterPluginsOptions {
   chainConfig: Config;
@@ -25,19 +26,16 @@ export default ({
   // TODO: load presets from npm
   // TODO: support load local presets
 
+  console.log(CWD);
+
   featerConfig.plugins.forEach((plugin: FeaterPlugin) => {
-    if (typeof plugin === 'string') {
-      // console.log(path.join(CWD, 'node_modules', preset));
-      require(path.join(CWD, 'node_modules', plugin)).default({
-        chainConfig,
-      })();
-    } else if (Array.isArray(plugin) && plugin.length > 0) {
-      require(path.join(CWD, 'node_modules', plugin[0])).default({
-        chainConfig,
-        presetConfig: plugin[1] || {},
-      });
-    } else {
-      logError('invalid preset config');
-    }
+    const reolvedPlugin = resolvePlugin(plugin);
+
+    console.log('plugin: ', plugin, reolvedPlugin);
+
+    require(reolvedPlugin.path).default({
+      chainConfig,
+      pluginConfig: reolvedPlugin.config,
+    })();
   });
 };

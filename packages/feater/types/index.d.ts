@@ -24,12 +24,19 @@ export interface RegisterCommandOptions {
 
 export type FeaterPlugin = string | [string, AnyObj];
 
+export interface DefaultPlugins {
+  react?: number;
+  vue?: number;
+}
+
 // for feater.config.js
 export interface FeaterConfig {
   // base config
   entry?: string;
   base?: string;
+  // `outputPath` will deprecation, outputDir instead
   outputPath?: string;
+  outputDir?: string;
   publicPath?: string;
   hash?: boolean;
 

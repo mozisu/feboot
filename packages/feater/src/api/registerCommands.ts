@@ -20,7 +20,6 @@ export default function registerCommands({
   if (isPathExist(configFilePath)) {
     featerConfig = require(configFilePath);
   } else {
-    // logWarning('缺少 feater.config.js 配置文件');
     featerConfig = {};
   }
 

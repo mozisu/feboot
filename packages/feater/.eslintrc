@@ -1,11 +1,7 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "@typescript-eslint",
-    "prettier",
-    "react"
-  ],
+  "plugins": ["@typescript-eslint", "prettier", "react"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -28,22 +24,10 @@
   },
   "rules": {
     "indent": 0,
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
-    "strict": [
-      2,
-      "global"
-    ],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "strict": [2, "global"],
     "no-console": 0,
     "getter-return": 0,
     "for-direction": 0,
@@ -52,5 +36,6 @@
   },
   "globals": {
     "Promise": true
-  }
+  },
+  "ignorePatterns": ["*.html"]
 }

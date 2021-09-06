@@ -12,6 +12,6 @@ module.exports = {
       ],
     },
   },
-  plugins: ['../../../../plugin-react/lib/index.js'],
+  plugins: ['../../../plugin-react/lib/index.js'],
   // plugins: [['@feater/plugin-react', {}]],
 };

@@ -1,12 +1,11 @@
+import { DefaultPlugins } from './../../types/index.d';
 import { FeaterConfig } from '../../types/index.d';
 import Config from 'webpack-chain';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import { isFunction } from '../utils/checkType';
 import chalk from 'chalk';
-import path from 'path';
 import getIPAddress from '../utils/getIPAddress';
-import isPathExist from '../utils/isPathExist';
 
 import alias from '../chains/alias';
 import babelLoader from '../chains/babelLoader';
@@ -15,36 +14,39 @@ import cssLoaders from '../chains/cssLoaders';
 
 import { logError } from '../utils/log';
 import registerPlugins from '../api/registerPlugins';
+import {
+  resolveEntry,
+  resolveOutputPath,
+  resolvePublicPath,
+} from '../utils/pathResolver';
 
-export default (featerConfig: FeaterConfig): void => {
+export default (
+  featerConfig: FeaterConfig,
+  defaultPlugins?: DefaultPlugins
+): void => {
   const config = new Config();
   const { port = 3000, open = false, chainWebpack, proxy = {} } = featerConfig;
 
   // ----- base start
   const name = 'main';
   const base = featerConfig.base || '/';
-  let entry = featerConfig.entry || 'src/index.js';
-  const outputPath = featerConfig.outputPath || 'dist';
-  const publicPath = featerConfig.publicPath || '/';
+  const entry = resolveEntry(featerConfig.entry);
+  const outputDir = resolveOutputPath(featerConfig.outputDir);
+  const publicPath = resolvePublicPath(featerConfig.publicPath);
 
-  if (!isPathExist(entry)) {
-    entry = 'index.js';
-  }
-
-  if (!isPathExist(entry)) {
-    logError('entry not exist');
-    process.exit(0);
-  }
+  console.log(entry);
+  console.log(outputDir);
+  console.log(publicPath);
 
   config
     .entry(name)
-    .add(path.join(process.cwd(), entry))
+    .add(entry)
     .end()
     .cache({
       type: 'filesystem',
     })
     .set('mode', 'development')
-    .output.path(path.join(process.cwd(), outputPath))
+    .output.path(outputDir)
     .filename(
       `js/${featerConfig.hash ? '[name].[hash:8]' : '[name]'}.bundle.js`
     )
@@ -73,6 +75,14 @@ export default (featerConfig: FeaterConfig): void => {
   cssLoaders({ config, featerConfig });
   htmlWebpackPlugin({ config });
   // chains end
+
+  // default plugins start
+  if (defaultPlugins.react || defaultPlugins.vue) {
+    featerConfig.plugins = featerConfig.plugins || [];
+  }
+  defaultPlugins.react && featerConfig.plugins.unshift('@feater/plugin-react');
+  defaultPlugins.vue && featerConfig.plugins.unshift('@feater/plugin-vue');
+  // default plugins end
 
   // register presets start
   try {
