@@ -3,7 +3,7 @@ import Config from 'webpack-chain';
 export default ({ config }: { config: Config }): void => {
   const babelRule = config.module.rule('babel').test(/.(j|t)s$/);
 
-  const babelConf = {
+  const babelConfig = {
     presets: [
       [
         '@babel/preset-env',
@@ -28,7 +28,7 @@ export default ({ config }: { config: Config }): void => {
   babelRule.exclude
     .add(/node_modules/)
     .end()
-    .use('babelLoader')
+    .use('babel-loader')
     .loader('babel-loader')
-    .options(babelConf);
+    .options(babelConfig);
 };

@@ -1,3 +1,4 @@
+import { trueCasePathSync } from 'true-case-path';
 import { DEFAULT_ENTRY_FILES } from './constants';
 import path from 'path';
 import isPathExist from './isPathExist';
@@ -17,8 +18,10 @@ export function isNotNodeModule(name: string): boolean {
 export function resolveEntry(entry?: string): string {
   if (!entry) {
     DEFAULT_ENTRY_FILES.forEach((item) => {
-      if (isPathExist(path.join(appRootPath, item))) {
-        entry = path.join(appRootPath, item);
+      const _entry = path.join(appRootPath, item);
+      if (isPathExist(_entry)) {
+        const trueCasePath = trueCasePathSync(_entry);
+        entry = trueCasePath === _entry ? _entry : trueCasePath;
       }
     });
   } else {
@@ -55,5 +58,5 @@ export function resolveModulePath(p: string): string {
     return isAbsPath(p) ? p : path.join(appRootPath, p);
   }
 
-  return p;
+  return path.join(appRootPath, 'node_modules', p);
 }

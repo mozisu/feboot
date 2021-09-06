@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import Config from 'webpack-chain';
 import isPathExist from '../utils/isPathExist';
@@ -19,9 +20,14 @@ export default ({ config }: { config: Config }): void => {
   const publicPath = '/';
   const filename = 'index.html';
 
-  config.plugin('html').use(HtmlWebpackPlugin, [
+  config.plugin('html-webpack-plugin').use(HtmlWebpackPlugin, [
     {
-      template,
+      // TODO:
+      // use tempalte will trigger a bug? with following logic:
+      // template = path.join(__dirname, '../../assets/index.html');
+
+      // template,
+      templateContent: fs.readFileSync(template, { encoding: 'utf-8' }),
       filename,
       publicPath,
     },

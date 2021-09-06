@@ -34,10 +34,6 @@ export default (
   const outputDir = resolveOutputPath(featerConfig.outputDir);
   const publicPath = resolvePublicPath(featerConfig.publicPath);
 
-  console.log(entry);
-  console.log(outputDir);
-  console.log(publicPath);
-
   config
     .entry(name)
     .add(entry)
@@ -104,6 +100,7 @@ export default (
   const compiler = webpack(config.toConfig());
 
   // console.log(JSON.stringify(compiler.options.resolve));
+  // console.dir(config.toConfig().module);
 
   const server = new WebpackDevServer(compiler, {
     ...compiler.options.devServer,

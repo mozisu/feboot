@@ -5,8 +5,8 @@
 import { logError } from '../utils/log';
 import { FeaterConfig, FeaterPlugin } from '../../types';
 import Config from 'webpack-chain';
-import path from 'path';
 import { resolvePlugin } from '../utils/plugin';
+import isPathExist from '../utils/isPathExist';
 
 interface RegisterPluginsOptions {
   chainConfig: Config;
@@ -29,13 +29,18 @@ export default ({
   console.log(CWD);
 
   featerConfig.plugins.forEach((plugin: FeaterPlugin) => {
-    const reolvedPlugin = resolvePlugin(plugin);
+    const resolvedPlugin = resolvePlugin(plugin);
 
-    console.log('plugin: ', plugin, reolvedPlugin);
+    console.log('plugin: ', plugin, resolvedPlugin.path);
 
-    require(reolvedPlugin.path).default({
+    if (!isPathExist(resolvedPlugin.path)) {
+      logError(`can not find plugin ${resolvedPlugin.name}`);
+      process.exit(1);
+    }
+
+    require(resolvedPlugin.path).default({
       chainConfig,
-      pluginConfig: reolvedPlugin.config,
+      pluginConfig: resolvedPlugin.config,
     })();
   });
 };
